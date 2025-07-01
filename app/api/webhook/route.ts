@@ -12,6 +12,8 @@ export const POST = async (req: NextRequest) => {
 
     // Verify the webhook signature
     console.log("Verifying webhook signature...");
+    console.log("signature" , signature);
+    console.log("body" , body);
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
