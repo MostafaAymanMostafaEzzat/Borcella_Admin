@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
     try {
       const { userId } = await auth()
+      console.log("userId", userId)
 
       if (!userId) {
         return new NextResponse("Unauthorized", { status: 403 })

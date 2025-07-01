@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/Stripe";
 import connectToDB from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
-import { json } from "stream/consumers";
 import { auth } from "@clerk/nextjs/server";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -17,19 +16,14 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
-     const { userId } = await auth()
-
-     console.log("userId", userId);
-      // if (!userId) {
-      //   return new NextResponse("Unauthorized", { status: 403 })
-      // }
-  
+     
+      
     console.log("[checkout_POST]");
     const { cartItems, customer } = await req.json();
     if (!cartItems || !cartItems.length) {
       return NextResponse.json({ error: "No items in cart" }, { status: 400 });
     }
-    if (!customer) {
+    if (!(customer.clerkId)) {
       return NextResponse.json(
         { error: "Customer email is required" },
         { status: 400 }
