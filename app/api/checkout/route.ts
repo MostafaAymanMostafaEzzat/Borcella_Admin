@@ -4,6 +4,7 @@ import { stripe } from "@/lib/Stripe";
 import connectToDB from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
 import { json } from "stream/consumers";
+import { auth } from "@clerk/nextjs/server";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -16,6 +17,12 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
+     const { userId } = await auth()
+
+      if (!userId) {
+        return new NextResponse("Unauthorized", { status: 403 })
+      }
+  
     console.log("[checkout_POST]");
     const { cartItems, customer } = await req.json();
     if (!cartItems || !cartItems.length) {
