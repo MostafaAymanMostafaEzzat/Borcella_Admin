@@ -19,9 +19,10 @@ export async function POST(req: NextRequest) {
   try {
      const { userId } = await auth()
 
-      if (!userId) {
-        return new NextResponse("Unauthorized", { status: 403 })
-      }
+     console.log("userId", userId);
+      // if (!userId) {
+      //   return new NextResponse("Unauthorized", { status: 403 })
+      // }
   
     console.log("[checkout_POST]");
     const { cartItems, customer } = await req.json();
